@@ -67,7 +67,6 @@ public:
                           const QString& extension_without_dot,
                           const QString& mimetype)
     {
-        Q_UNUSED(data)
         Q_UNUSED(extension_without_dot)
         Q_UNUSED(mimetype)
         if (!m_camera) {
