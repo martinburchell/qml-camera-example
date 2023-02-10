@@ -128,6 +128,7 @@ int main(int argc, char* argv[])
 {
     QApplication app(argc,argv);
     TestWindow window;
+    window.resize(800, 800);
     window.show();
 
     return app.exec();
