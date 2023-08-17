@@ -78,6 +78,9 @@ public:
 
     void openCamera()
     {
+        if (m_camera) {
+            return;
+        }
         m_camera = new CameraQml();
         QObject::connect(m_camera, &CameraQml::cancelled,
                          this, &TestWindow::cameraCancelled);
