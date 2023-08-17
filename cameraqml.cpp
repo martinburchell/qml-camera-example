@@ -44,7 +44,6 @@ CameraQml::CameraQml(QWidget* parent) : QWidget(parent)
     qDebug() << Q_FUNC_INFO;
 #endif
 
-    QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
     m_qml_view = new QQuickWidget();
     m_qml_view->setResizeMode(QQuickWidget::SizeRootObjectToView);
     connect(m_qml_view->engine(), &QQmlEngine::quit,
