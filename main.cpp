@@ -7,9 +7,6 @@
 
 #include "cameraqml.h"
 
-const int CAMERA_WIDTH = 640;
-const int CAMERA_HEIGHT = 512;
-
 const int PHOTO_WIDTH = 320;
 const int PHOTO_HEIGHT = 160;
 
@@ -29,13 +26,9 @@ public:
         m_layout->addWidget(m_button);
 
         m_camera_label = new QLabel("Camera goes here");
-        m_camera_label->setMaximumWidth(CAMERA_WIDTH);
-        m_camera_label->setMaximumHeight(CAMERA_HEIGHT);
         m_layout->addWidget(m_camera_label);
 
         m_photo = new QLabel();
-        m_photo->setMaximumWidth(PHOTO_WIDTH);
-        m_photo->setMaximumHeight(PHOTO_HEIGHT);
         m_layout->addWidget(m_photo);
 
         QWidget *window = new QWidget();
