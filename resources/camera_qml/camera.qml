@@ -54,7 +54,7 @@ import QtMultimedia
 Rectangle {
     id : cameraUI
 
-    signal imageSavedToFile(string filename)  // RNC
+    signal imageSavedToFile(string filename, int orientation)  // RNC
     signal fileNoLongerNeeded(string filename)  // RNC
 
     width: 800
@@ -65,6 +65,7 @@ Rectangle {
     property string platformScreen: ""
     property int buttonsPanelLandscapeWidth: 328
     property int buttonsPanelPortraitHeight: 180
+    property int orientation: Screen.orientation
 
     onWidthChanged: {
         setState()
@@ -123,6 +124,7 @@ Rectangle {
             id: imageCapture
             onImageCaptured: function(requestId, previewImage) {
                 console.log("Image captured")
+                cameraUI.orientation = Screen.orientation
                 stillControls.previewAvailable = true
                 cameraUI.state = "PhotoPreview"
             }
@@ -150,7 +152,8 @@ Rectangle {
         focus: visible
         onImageSavedToFile: {
             console.log("Returning image with filename:", stillControls.filePath)
-            cameraUI.imageSavedToFile(stillControls.filePath)
+            console.log("Orientation:", cameraUI.orientation)
+            cameraUI.imageSavedToFile(stillControls.filePath, cameraUI.orientation)
         }
         source: imageCapture.preview
     }

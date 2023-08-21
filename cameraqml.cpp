@@ -99,8 +99,8 @@ void CameraQml::qmlFinishedLoading()
     Q_ASSERT(root);
     // It's possible to connect to non-root objects, but it's much cleaner to
     // route from QML child objects up to the QML root object, and then to C++.
-    connect(root, SIGNAL(imageSavedToFile(const QString&)),
-            this, SLOT(cameraHasCapturedImage(const QString&)));
+    connect(root, SIGNAL(imageSavedToFile(const QString&, const int)),
+            this, SLOT(cameraHasCapturedImage(const QString&, const int)));
     connect(root, SIGNAL(fileNoLongerNeeded(const QString&)),
             this, SLOT(deleteSuperfluousFile(const QString&)));
     // ... we have to use SIGNAL() and SLOT() since C++ has no idea of the
@@ -133,7 +133,7 @@ void CameraQml::deleteSuperfluousFile(const QString& filename) const
 }
 
 
-void CameraQml::cameraHasCapturedImage(const QString& filename)
+void CameraQml::cameraHasCapturedImage(const QString& filename, const int orientation)
 {
 #ifdef DEBUG_CAMERA
     qDebug() << Q_FUNC_INFO;
@@ -162,7 +162,7 @@ void CameraQml::cameraHasCapturedImage(const QString& filename)
 #ifdef DEBUG_CAMERA
         qDebug() << "Camera image data loaded";
 #endif
-        emit rawImageCaptured(data, extension_without_dot, mimetype_name);
+        emit rawImageCaptured(data, extension_without_dot, mimetype_name, orientation);
 
     } else {
 
@@ -172,7 +172,7 @@ void CameraQml::cameraHasCapturedImage(const QString& filename)
         QImage img;
         img.load(filename);
         deleteFile(filename);
-        emit imageCaptured(img);
+        emit imageCaptured(img, orientation);
 
     }
 

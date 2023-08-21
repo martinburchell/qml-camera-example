@@ -93,10 +93,11 @@ signals:
     // "We've captured an image." High performance.
     void rawImageCaptured(QByteArray data,  // QByteArray is copy-on-write
                           QString extension_without_dot,
-                          QString mimetype);
+                          QString mimetype,
+                          int orientation);
 
     // "We've captured an image." Lower performance.
-    void imageCaptured(QImage image);  // QImage is copy-on-write
+    void imageCaptured(QImage image, int orientation);  // QImage is copy-on-write
 
     // "User has cancelled the operation."
     void cancelled();
@@ -130,7 +131,7 @@ protected slots:
 
     // "The camera QML has captured an image via a temporary file."
     // Called from the imageSavedToFile signal defined in camera.qml.
-    void cameraHasCapturedImage(const QString& filename);
+    void cameraHasCapturedImage(const QString& filename, const int orientation);
 
 protected:
     QPointer<QQuickWidget> m_qml_view;  // our QML view widget

@@ -46,11 +46,12 @@ public:
         hideCamera();
     }
 
-    void imageCaptured(const QImage& image)
+    void imageCaptured(const QImage& image, const int orientation)
     {
         if (!m_camera) {
             return;
         }
+        qDebug() << "imageCaptured, orientation:" << orientation;
         m_photo->setPixmap(QPixmap::fromImage(image));
 
         hideCamera();
@@ -58,13 +59,16 @@ public:
 
     void rawImageCaptured(const QByteArray& data,
                           const QString& extension_without_dot,
-                          const QString& mimetype)
+                          const QString& mimetype,
+                          const int orientation)
     {
         Q_UNUSED(extension_without_dot)
         Q_UNUSED(mimetype)
         if (!m_camera) {
             return;
         }
+
+        qDebug() << "rawImageCaptured, orientation:" << orientation;
 
         QImage image;
         bool success = image.loadFromData(data);
