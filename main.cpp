@@ -46,13 +46,14 @@ public:
         hideCamera();
     }
 
-    void imageCaptured(const QImage& image, const int orientation)
+    void imageCaptured(const QImage& image)
     {
         if (!m_camera) {
             return;
         }
-        qDebug() << "imageCaptured, orientation:" << orientation;
-        m_photo->setPixmap(QPixmap::fromImage(image));
+        QImage scaled = image.scaled(PHOTO_WIDTH, PHOTO_HEIGHT,
+                                     Qt::KeepAspectRatio);
+        m_photo->setPixmap(QPixmap::fromImage(scaled));
 
         hideCamera();
     }
@@ -88,8 +89,8 @@ public:
         m_camera = new CameraQml();
         QObject::connect(m_camera, &CameraQml::cancelled,
                          this, &TestWindow::cameraCancelled);
-        QObject::connect(m_camera, &CameraQml::rawImageCaptured,
-                         this, &TestWindow::rawImageCaptured);
+        // QObject::connect(m_camera, &CameraQml::rawImageCaptured,
+        //                  this, &TestWindow::rawImageCaptured);
         QObject::connect(m_camera, &CameraQml::imageCaptured,
                          this, &TestWindow::imageCaptured);
         showCamera();

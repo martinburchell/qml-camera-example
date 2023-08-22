@@ -103,6 +103,9 @@ void CameraQml::qmlFinishedLoading()
             this, SLOT(cameraHasCapturedImage(const QString&, const int)));
     connect(root, SIGNAL(fileNoLongerNeeded(const QString&)),
             this, SLOT(deleteSuperfluousFile(const QString&)));
+    connect(root, SIGNAL(imageCaptured(const QVariant&)),
+            this, SLOT(copyPreviewImage(const QVariant&)));
+    connect(root, SIGNAL(imageSaved()), this, SLOT(savePreviewImage()));
     // ... we have to use SIGNAL() and SLOT() since C++ has no idea of the
     // provenance of the signal (and whether or not it exists) -- the macros
     // map signals via strings, so this works, but you'll get an error like
@@ -140,6 +143,8 @@ void CameraQml::cameraHasCapturedImage(const QString& filename, const int orient
     qDebug() << "Camera image has arrived via temporary file" << filename;
 #endif
 
+    return;
+
     const QFileInfo fileinfo(filename);
     const QString extension_without_dot = fileinfo.suffix();
     const QMimeDatabase mime_db;
@@ -172,9 +177,21 @@ void CameraQml::cameraHasCapturedImage(const QString& filename, const int orient
         QImage img;
         img.load(filename);
         deleteFile(filename);
-        emit imageCaptured(img, orientation);
+        emit imageCaptured(img);
 
     }
 
     close();
+}
+
+
+void CameraQml::copyPreviewImage(const QVariant& preview)
+{
+    m_preview = preview.value<QImage>();
+}
+
+
+void CameraQml::savePreviewImage()
+{
+    emit imageCaptured(m_preview);
 }

@@ -56,6 +56,8 @@ Rectangle {
 
     signal imageSavedToFile(string filename, int orientation)  // RNC
     signal fileNoLongerNeeded(string filename)  // RNC
+    signal imageCaptured(variant previewImage)
+    signal imageSaved
 
     width: 800
     height: 480
@@ -123,16 +125,18 @@ Rectangle {
         imageCapture: ImageCapture {
             id: imageCapture
             onImageCaptured: function(requestId, previewImage) {
-                console.log("Image captured")
+                console.log("Image captured: ", previewImage)
                 cameraUI.orientation = Screen.orientation
                 stillControls.previewAvailable = true
                 cameraUI.state = "PhotoPreview"
+                cameraUI.imageCaptured(previewImage)
             }
             // RNC:
             onImageSaved: function(requestId, path) {
                 console.log("onImageSaved: ", path)
                 stillControls.fileSaved = true
                 stillControls.filePath = path
+                cameraUI.imageSaved()
            }
         }
 

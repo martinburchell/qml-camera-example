@@ -97,7 +97,7 @@ signals:
                           int orientation);
 
     // "We've captured an image." Lower performance.
-    void imageCaptured(QImage image, int orientation);  // QImage is copy-on-write
+    void imageCaptured(QImage image);  // QImage is copy-on-write
 
     // "User has cancelled the operation."
     void cancelled();
@@ -133,6 +133,10 @@ protected slots:
     // Called from the imageSavedToFile signal defined in camera.qml.
     void cameraHasCapturedImage(const QString& filename, const int orientation);
 
+    void copyPreviewImage(const QVariant& preview);
+    void savePreviewImage();
 protected:
     QPointer<QQuickWidget> m_qml_view;  // our QML view widget
+private:
+    QImage m_preview;
 };
