@@ -58,7 +58,6 @@ FocusScope {
     property bool previewAvailable : false
     property bool fileSaved : false  // RNC
     property string filePath : ""  // RNC
-    signal fileNoLongerNeeded(string filename)  // RNC
 
     property int buttonsmargin: 8
     property int buttonsPanelWidth
@@ -91,7 +90,6 @@ FocusScope {
                     // (3) When we succeed and return an image
                     //     ... via imageSavedToFile()
                     console.log("Capturing new image; requesting deletion of superfluous file:", filePath)
-                    fileNoLongerNeeded(filePath)
                     previewAvailable = false
                     fileSaved = false
                     console.log("Calling imageCapture.captureToFile()")

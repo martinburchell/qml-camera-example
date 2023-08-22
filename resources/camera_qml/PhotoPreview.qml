@@ -54,7 +54,7 @@ import QtMultimedia
 Item {
     property alias source : preview.source
     signal closed
-    signal imageSavedToFile  // RNC
+    signal previewSaved  // RNC
 
     Image {
         id: preview
@@ -80,7 +80,7 @@ Item {
         text: qsTr("Save")
         onClicked: {
             console.log("Save button clicked")
-            imageSavedToFile()
+            previewSaved()
         }
     }
 }

@@ -90,12 +90,6 @@ signals:
     // better. Failing that, we will emit imageCaptured. ONE OR THE OTHER will
     // be emitted.
 
-    // "We've captured an image." High performance.
-    void rawImageCaptured(QByteArray data,  // QByteArray is copy-on-write
-                          QString extension_without_dot,
-                          QString mimetype,
-                          int orientation);
-
     // "We've captured an image." Lower performance.
     void imageCaptured(QImage image);  // QImage is copy-on-write
 
@@ -112,9 +106,6 @@ protected:
     // Connects the QML object signals to our slots.
     void qmlFinishedLoading();
 
-    // Delete a temporary camera file.
-    void deleteFile(const QString& filename) const;
-
 protected slots:
 
     // Note that we route signals through the various QML objects to the QML
@@ -124,14 +115,6 @@ protected slots:
     // "The QML root object's status has changed."
     // Called from m_qml_view's QQuickWidget::statusChanged.
     void qmlStatusChanged(QQuickWidget::Status status);
-
-    // "The camera QML says a temporary file is no longer needed."
-    // Called from the fileNoLongerNeeded signal defined in camera.qml.
-    void deleteSuperfluousFile(const QString& filename) const;
-
-    // "The camera QML has captured an image via a temporary file."
-    // Called from the imageSavedToFile signal defined in camera.qml.
-    void cameraHasCapturedImage(const QString& filename, const int orientation);
 
     void copyPreviewImage(const QVariant& preview);
     void savePreviewImage();

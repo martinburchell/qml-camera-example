@@ -54,10 +54,8 @@ import QtMultimedia
 Rectangle {
     id : cameraUI
 
-    signal imageSavedToFile(string filename, int orientation)  // RNC
-    signal fileNoLongerNeeded(string filename)  // RNC
     signal imageCaptured(variant previewImage)
-    signal imageSaved
+    signal previewSaved
 
     width: 800
     height: 480
@@ -131,13 +129,6 @@ Rectangle {
                 cameraUI.state = "PhotoPreview"
                 cameraUI.imageCaptured(previewImage)
             }
-            // RNC:
-            onImageSaved: function(requestId, path) {
-                console.log("onImageSaved: ", path)
-                stillControls.fileSaved = true
-                stillControls.filePath = path
-                cameraUI.imageSaved()
-           }
         }
 
         recorder: MediaRecorder {
@@ -154,10 +145,8 @@ Rectangle {
         onClosed: cameraUI.state = "PhotoCapture"
         visible: (cameraUI.state === "PhotoPreview")
         focus: visible
-        onImageSavedToFile: {
-            console.log("Returning image with filename:", stillControls.filePath)
-            console.log("Orientation:", cameraUI.orientation)
-            cameraUI.imageSavedToFile(stillControls.filePath, cameraUI.orientation)
+        onPreviewSaved: {
+            cameraUI.previewSaved()
         }
         source: imageCapture.preview
     }
@@ -195,11 +184,6 @@ Rectangle {
         onPreviewSelected: cameraUI.state = "PhotoPreview"
         onVideoModeSelected: cameraUI.state = "VideoCapture"
         previewAvailable: imageCapture.preview.length !== 0
-
-        // RNC:
-        onFileNoLongerNeeded: {
-            cameraUI.fileNoLongerNeeded(stillControls.filePath)
-        }
     }
 
     VideoCaptureControls {
